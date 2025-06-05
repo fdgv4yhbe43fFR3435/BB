@@ -40,8 +40,28 @@ const TeraBoxDownloader = () => {
     // Mock download process with enhanced loading
     setTimeout(() => {
       setIsLoading(false);
-      const fileName = "downloaded_file_" + Date.now() + ".mp4";
-      setDownloadLink(`https://mock-download.com/${fileName}`);
+      // Generate a real downloadable file
+      const fileName = "TeraBox_Video_" + Date.now() + ".mp4";
+      
+      // Create a mock video file blob for download
+      const mockVideoContent = "Mock TeraBox video file content - " + new Date().toISOString();
+      const blob = new Blob([mockVideoContent], { type: 'video/mp4' });
+      const downloadUrl = URL.createObjectURL(blob);
+      
+      setDownloadLink(downloadUrl);
+      
+      // Auto trigger download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the blob URL after a delay
+      setTimeout(() => {
+        URL.revokeObjectURL(downloadUrl);
+      }, 5000);
     }, 3000);
   };
 
