@@ -292,10 +292,21 @@ const TeraBoxDownloader = () => {
           </form>
         </div>
 
-        {/* Enhanced Features with 3D Icons */}
+        {/* Enhanced Features with Mouse-Responsive 3D Icons */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full">
-          <div className="text-center animate-fadeInUp" style={{animationDelay: '0.2s'}}>
-            <div className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div 
+            className="text-center animate-fadeInUp" 
+            style={{
+              animationDelay: '0.2s',
+              transform: `translateX(${mousePosition.x * 0.03}px) translateY(${mousePosition.y * 0.03}px)`
+            }}
+          >
+            <div 
+              className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{
+                transform: `rotateY(${mousePosition.x * 0.05}deg) rotateX(${mousePosition.y * 0.05}deg)`
+              }}
+            >
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -304,8 +315,19 @@ const TeraBoxDownloader = () => {
             <p className="text-gray-400">High-speed downloads with no limits</p>
           </div>
 
-          <div className="text-center animate-fadeInUp" style={{animationDelay: '0.4s'}}>
-            <div className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div 
+            className="text-center animate-fadeInUp" 
+            style={{
+              animationDelay: '0.4s',
+              transform: `translateX(${mousePosition.x * -0.03}px) translateY(${mousePosition.y * 0.03}px)`
+            }}
+          >
+            <div 
+              className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{
+                transform: `rotateY(${mousePosition.x * -0.05}deg) rotateX(${mousePosition.y * 0.05}deg)`
+              }}
+            >
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -314,8 +336,19 @@ const TeraBoxDownloader = () => {
             <p className="text-gray-400">Secure downloads without login required</p>
           </div>
 
-          <div className="text-center animate-fadeInUp" style={{animationDelay: '0.6s'}}>
-            <div className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div 
+            className="text-center animate-fadeInUp" 
+            style={{
+              animationDelay: '0.6s',
+              transform: `translateX(${mousePosition.x * 0.03}px) translateY(${mousePosition.y * -0.03}px)`
+            }}
+          >
+            <div 
+              className="icon-3d w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{
+                transform: `rotateY(${mousePosition.x * 0.05}deg) rotateX(${mousePosition.y * -0.05}deg)`
+              }}
+            >
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
