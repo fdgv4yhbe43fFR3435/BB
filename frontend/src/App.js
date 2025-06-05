@@ -97,24 +97,29 @@ const TeraBoxDownloader = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-      {/* Enhanced Background with Parallax */}
+      {/* Enhanced Background with Mouse-Responsive Parallax */}
       <div 
         className="absolute inset-0 opacity-5 cyber-grid"
         style={{
-          transform: `translateX(${mousePosition.x * 0.02}px) translateY(${mousePosition.y * 0.02}px)`
+          transform: `translateX(${mousePosition.x * 0.05}px) translateY(${mousePosition.y * 0.05}px) rotateX(${mousePosition.y * 0.02}deg) rotateY(${mousePosition.x * 0.02}deg)`
         }}
       ></div>
       
-      {/* Matrix Rain Effect */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Matrix Rain Effect with Mouse Interaction */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          transform: `translateX(${mousePosition.x * 0.03}px) translateY(${mousePosition.y * 0.03}px)`
+        }}
+      >
         {generateMatrixChars()}
       </div>
 
-      {/* Anime Background with Parallax */}
+      {/* Anime Background with Enhanced Parallax */}
       <div 
         className="absolute inset-0 opacity-10"
         style={{
-          transform: `translateX(${mousePosition.x * 0.01}px) translateY(${mousePosition.y * 0.01}px)`
+          transform: `translateX(${mousePosition.x * 0.02}px) translateY(${mousePosition.y * 0.02}px) scale(${1 + mousePosition.x * 0.0001})`
         }}
       >
         <img 
@@ -124,14 +129,44 @@ const TeraBoxDownloader = () => {
         />
       </div>
       
-      {/* Enhanced Animated Particles */}
+      {/* Enhanced Animated Particles with Mouse Tracking */}
       <div className="absolute inset-0">
-        <div className="particle particle-1 animate-rotate3D"></div>
-        <div className="particle particle-2 animate-matrix"></div>
-        <div className="particle particle-3 animate-pulse3D"></div>
-        <div className="particle particle-4 animate-glow"></div>
-        <div className="particle particle-5 animate-float"></div>
-        <div className="particle particle-6"></div>
+        <div 
+          className="particle particle-1 animate-rotate3D"
+          style={{
+            transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`
+          }}
+        ></div>
+        <div 
+          className="particle particle-2 animate-matrix"
+          style={{
+            transform: `translate(${mousePosition.x * -0.08}px, ${mousePosition.y * 0.08}px)`
+          }}
+        ></div>
+        <div 
+          className="particle particle-3 animate-pulse3D"
+          style={{
+            transform: `translate(${mousePosition.x * 0.06}px, ${mousePosition.y * -0.06}px)`
+          }}
+        ></div>
+        <div 
+          className="particle particle-4 animate-glow"
+          style={{
+            transform: `translate(${mousePosition.x * -0.04}px, ${mousePosition.y * -0.04}px)`
+          }}
+        ></div>
+        <div 
+          className="particle particle-5 animate-float"
+          style={{
+            transform: `translate(${mousePosition.x * 0.07}px, ${mousePosition.y * 0.07}px)`
+          }}
+        ></div>
+        <div 
+          className="particle particle-6"
+          style={{
+            transform: `translate(${mousePosition.x * -0.05}px, ${mousePosition.y * 0.05}px)`
+          }}
+        ></div>
       </div>
 
       {/* Main Content */}
