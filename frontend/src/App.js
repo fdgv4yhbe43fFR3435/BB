@@ -38,92 +38,66 @@ const TeraBoxDownloader = () => {
     setDownloadLink("");
 
     // Mock download process with realistic file
-    setTimeout(async () => {
+    setTimeout(() => {
       setIsLoading(false);
       const fileName = "TeraBox_Video_" + Date.now() + ".mp4";
       
-      try {
-        // Option 1: Download a real sample video from internet
-        const sampleVideoUrl = "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4";
+      // Create a better mock video file that simulates real size
+      const createRealisticMockVideo = (sizeMB = 3) => {
+        const targetSize = sizeMB * 1024 * 1024; // Convert to bytes
         
-        // Fetch the real video
-        const response = await fetch(sampleVideoUrl);
-        if (response.ok) {
-          const blob = await response.blob();
-          const downloadUrl = URL.createObjectURL(blob);
-          
-          setDownloadLink(downloadUrl);
-          
-          // Auto trigger download
-          const link = document.createElement('a');
-          link.href = downloadUrl;
-          link.download = fileName;
-          link.style.display = 'none';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          
-          // Clean up
-          setTimeout(() => {
-            URL.revokeObjectURL(downloadUrl);
-          }, 10000);
-        } else {
-          throw new Error("Failed to fetch sample video");
-        }
-      } catch (error) {
-        // Fallback: Create a larger mock file with proper MP4 structure
-        console.log("Using fallback mock video");
-        
-        // Create a realistic 3MB+ mock video file
-        const createMockVideo = (sizeMB = 3) => {
-          const size = sizeMB * 1024 * 1024; // Convert to bytes
-          
-          // Basic MP4 file header (simplified)
-          const mp4Header = new Uint8Array([
-            // ftyp box
-            0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70,
-            0x69, 0x73, 0x6F, 0x6D, 0x00, 0x00, 0x02, 0x00,
-            0x69, 0x73, 0x6F, 0x6D, 0x69, 0x73, 0x6F, 0x32,
-            0x61, 0x76, 0x63, 0x31, 0x6D, 0x70, 0x34, 0x31,
-            // mdat box header
-            0x00, 0x00, 0x00, 0x08, 0x6D, 0x64, 0x61, 0x74
-          ]);
-          
-          // Create array with proper size
-          const videoData = new Uint8Array(size);
-          
-          // Set header
-          videoData.set(mp4Header, 0);
-          
-          // Fill with semi-random data to simulate video content
-          for (let i = mp4Header.length; i < size; i++) {
-            // Create pattern that looks like compressed video data
-            videoData[i] = (i % 256) ^ ((i >> 8) % 256) ^ ((i >> 16) % 256);
-          }
-          
-          return videoData.buffer;
+        // Create content that simulates a real video file
+        const videoMetadata = {
+          title: "TeraBox Downloaded Video",
+          duration: "00:02:30",
+          resolution: "1280x720",
+          codec: "H.264",
+          bitrate: "1500 kbps",
+          downloadedFrom: url,
+          timestamp: new Date().toISOString(),
+          size: `${sizeMB} MB`
         };
         
-        const mockVideoBuffer = createMockVideo(3); // 3MB file
-        const blob = new Blob([mockVideoBuffer], { type: 'video/mp4' });
-        const downloadUrl = URL.createObjectURL(blob);
+        // Create a text-based content that represents the video
+        let content = `# TeraBox Video File\n`;
+        content += `# This is a mock video file for demonstration\n`;
+        content += `# Video Metadata:\n`;
+        content += JSON.stringify(videoMetadata, null, 2) + "\n\n";
         
-        setDownloadLink(downloadUrl);
+        // Add pattern data to reach target size
+        const baseContentSize = new TextEncoder().encode(content).length;
+        const remainingSize = targetSize - baseContentSize;
         
-        // Auto trigger download
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = fileName;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Fill with binary-like pattern to simulate video data
+        const pattern = "0123456789ABCDEF";
+        for (let i = 0; i < remainingSize; i += 16) {
+          content += pattern;
+          if (i % 1024 === 0) content += "\n"; // Add newlines periodically
+        }
         
-        // Clean up
-        setTimeout(() => {
-          URL.revokeObjectURL(downloadUrl);
-        }, 10000);
-      }
+        return content;
+      };
+      
+      // Generate realistic mock video content
+      const mockVideoContent = createRealisticMockVideo(3); // 3MB
+      const blob = new Blob([mockVideoContent], { type: 'video/mp4' });
+      const downloadUrl = URL.createObjectURL(blob);
+      
+      setDownloadLink(downloadUrl);
+      
+      // Auto trigger download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = fileName;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up
+      setTimeout(() => {
+        URL.revokeObjectURL(downloadUrl);
+      }, 10000);
     }, 3000);
   };
 
