@@ -171,18 +171,31 @@ const TeraBoxDownloader = () => {
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
-        {/* Enhanced Logo/Title with 3D */}
-        <div className="text-center mb-12 animate-fadeInUp">
+        {/* Enhanced Logo/Title with Mouse-Responsive 3D */}
+        <div 
+          className="text-center mb-12 animate-fadeInUp"
+          style={{
+            transform: `perspective(1000px) rotateX(${mousePosition.y * 0.02}deg) rotateY(${mousePosition.x * 0.02}deg) translateZ(${mousePosition.x * 0.1}px)`
+          }}
+        >
           <h1 
             className="text-6xl md:text-8xl font-bold text-white mb-4 tracking-wider title-3d neon-glow"
             data-text="TERABOX"
+            style={{
+              transform: `translateX(${mousePosition.x * 0.05}px) translateY(${mousePosition.y * 0.05}px)`
+            }}
           >
             <span className="bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
               TERA
             </span>
             <span className="text-gray-400">BOX</span>
           </h1>
-          <div className="w-32 h-1 bg-gradient-to-r from-gray-400 to-white mx-auto mb-4 animate-glow"></div>
+          <div 
+            className="w-32 h-1 bg-gradient-to-r from-gray-400 to-white mx-auto mb-4 animate-glow"
+            style={{
+              transform: `scaleX(${1 + mousePosition.x * 0.001}) translateY(${mousePosition.y * 0.02}px)`
+            }}
+          ></div>
         </div>
 
         {/* Enhanced Download Form with 3D */}
