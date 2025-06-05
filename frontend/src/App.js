@@ -128,9 +128,6 @@ const TeraBoxDownloader = () => {
             <span className="text-gray-400">BOX</span>
           </h1>
           <div className="w-32 h-1 bg-gradient-to-r from-gray-400 to-white mx-auto mb-4 animate-glow"></div>
-          <p className="text-gray-300 text-xl md:text-2xl font-light gradient-text">
-            3D Anime Style Downloader
-          </p>
         </div>
 
         {/* Enhanced Download Form with 3D */}
