@@ -246,10 +246,13 @@ const TeraBoxDownloader = () => {
                     <p className="text-gray-300 text-sm break-all">{downloadLink}</p>
                   </div>
                   <button
-                    onClick={() => window.open(downloadLink, '_blank')}
+                    onClick={() => {
+                      // The download already happened automatically, just show a message
+                      alert("File downloaded successfully! Check your Downloads folder.");
+                    }}
                     className="ml-4 px-6 py-3 btn-3d bg-green-600 hover:bg-green-500 text-white rounded-lg font-medium"
                   >
-                    Download
+                    Downloaded ✓
                   </button>
                 </div>
               </div>
