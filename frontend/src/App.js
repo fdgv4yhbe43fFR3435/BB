@@ -37,56 +37,93 @@ const TeraBoxDownloader = () => {
     setError("");
     setDownloadLink("");
 
-    // Mock download process with realistic video file
-    setTimeout(() => {
+    // Mock download process with realistic file
+    setTimeout(async () => {
       setIsLoading(false);
       const fileName = "TeraBox_Video_" + Date.now() + ".mp4";
       
-      // Create a realistic mock video file (3MB size)
-      const generateMockVideoData = (sizeInMB) => {
-        const sizeInBytes = sizeInMB * 1024 * 1024;
-        const mockVideoHeader = new Uint8Array([
-          0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, // MP4 header
-          0x69, 0x73, 0x6F, 0x6D, 0x00, 0x00, 0x02, 0x00,
-          0x69, 0x73, 0x6F, 0x6D, 0x69, 0x73, 0x6F, 0x32,
-          0x61, 0x76, 0x63, 0x31, 0x6D, 0x70, 0x34, 0x31
-        ]);
+      try {
+        // Option 1: Download a real sample video from internet
+        const sampleVideoUrl = "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4";
         
-        // Create buffer with realistic size
-        const buffer = new ArrayBuffer(sizeInBytes);
-        const view = new Uint8Array(buffer);
-        
-        // Add MP4 header
-        view.set(mockVideoHeader, 0);
-        
-        // Fill rest with mock video data pattern
-        for (let i = mockVideoHeader.length; i < sizeInBytes; i++) {
-          view[i] = Math.floor(Math.random() * 256);
+        // Fetch the real video
+        const response = await fetch(sampleVideoUrl);
+        if (response.ok) {
+          const blob = await response.blob();
+          const downloadUrl = URL.createObjectURL(blob);
+          
+          setDownloadLink(downloadUrl);
+          
+          // Auto trigger download
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = fileName;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          // Clean up
+          setTimeout(() => {
+            URL.revokeObjectURL(downloadUrl);
+          }, 10000);
+        } else {
+          throw new Error("Failed to fetch sample video");
         }
+      } catch (error) {
+        // Fallback: Create a larger mock file with proper MP4 structure
+        console.log("Using fallback mock video");
         
-        return buffer;
-      };
-      
-      // Generate 3MB mock video
-      const mockVideoBuffer = generateMockVideoData(3);
-      const blob = new Blob([mockVideoBuffer], { type: 'video/mp4' });
-      const downloadUrl = URL.createObjectURL(blob);
-      
-      setDownloadLink(downloadUrl);
-      
-      // Auto trigger download
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = fileName;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the blob URL after a delay
-      setTimeout(() => {
-        URL.revokeObjectURL(downloadUrl);
-      }, 10000);
+        // Create a realistic 3MB+ mock video file
+        const createMockVideo = (sizeMB = 3) => {
+          const size = sizeMB * 1024 * 1024; // Convert to bytes
+          
+          // Basic MP4 file header (simplified)
+          const mp4Header = new Uint8Array([
+            // ftyp box
+            0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70,
+            0x69, 0x73, 0x6F, 0x6D, 0x00, 0x00, 0x02, 0x00,
+            0x69, 0x73, 0x6F, 0x6D, 0x69, 0x73, 0x6F, 0x32,
+            0x61, 0x76, 0x63, 0x31, 0x6D, 0x70, 0x34, 0x31,
+            // mdat box header
+            0x00, 0x00, 0x00, 0x08, 0x6D, 0x64, 0x61, 0x74
+          ]);
+          
+          // Create array with proper size
+          const videoData = new Uint8Array(size);
+          
+          // Set header
+          videoData.set(mp4Header, 0);
+          
+          // Fill with semi-random data to simulate video content
+          for (let i = mp4Header.length; i < size; i++) {
+            // Create pattern that looks like compressed video data
+            videoData[i] = (i % 256) ^ ((i >> 8) % 256) ^ ((i >> 16) % 256);
+          }
+          
+          return videoData.buffer;
+        };
+        
+        const mockVideoBuffer = createMockVideo(3); // 3MB file
+        const blob = new Blob([mockVideoBuffer], { type: 'video/mp4' });
+        const downloadUrl = URL.createObjectURL(blob);
+        
+        setDownloadLink(downloadUrl);
+        
+        // Auto trigger download
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up
+        setTimeout(() => {
+          URL.revokeObjectURL(downloadUrl);
+        }, 10000);
+      }
     }, 3000);
   };
 
