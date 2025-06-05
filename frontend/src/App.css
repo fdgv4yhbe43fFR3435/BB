@@ -2,48 +2,104 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Custom Animations */
-@keyframes fadeInUp {
+/* 3D Perspective */
+body {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Enhanced 3D Animations */
+@keyframes fadeInUp3D {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translate3d(0, 100px, -100px) rotateX(30deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) rotateX(0deg);
   }
 }
 
-@keyframes slideUp {
+@keyframes slideUp3D {
   from {
     opacity: 0;
-    transform: translateY(100px);
+    transform: translate3d(0, 150px, -200px) rotateX(45deg) rotateY(10deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes fadeIn3D {
+  from { 
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3) rotateY(180deg);
+  }
+  to { 
+    opacity: 1;
+    transform: scale3d(1, 1, 1) rotateY(0deg);
+  }
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+@keyframes shake3D {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
+  25% { transform: translate3d(-10px, 0, 5px) rotateZ(-2deg); }
+  75% { transform: translate3d(10px, 0, 5px) rotateZ(2deg); }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+@keyframes float3D {
+  0%, 100% { 
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  }
+  33% { 
+    transform: translate3d(0, -30px, 20px) rotateX(10deg) rotateY(10deg);
+  }
+  66% { 
+    transform: translate3d(0, -15px, 10px) rotateX(-5deg) rotateY(-5deg);
+  }
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes spin3D {
+  from { transform: rotate3d(0, 0, 1, 0deg); }
+  to { transform: rotate3d(0, 0, 1, 360deg); }
+}
+
+@keyframes pulse3D {
+  0%, 100% { 
+    transform: scale3d(1, 1, 1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  50% { 
+    transform: scale3d(1.05, 1.05, 1.05);
+    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes glow3D {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgba(255, 255, 255, 0.2),
+      0 0 40px rgba(255, 255, 255, 0.1),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 40px rgba(255, 255, 255, 0.4),
+      0 0 80px rgba(255, 255, 255, 0.2),
+      inset 0 0 40px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes rotate3D {
+  from { transform: rotateY(0deg) rotateX(0deg); }
+  to { transform: rotateY(360deg) rotateX(360deg); }
+}
+
+@keyframes matrix {
+  0% { transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
+  50% { transform: matrix3d(1.1,0,0,0,0,1.1,0,0,0,0,1,0,0,50,0,1); }
+  100% { transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1); }
 }
 
 /* Animation Classes */
