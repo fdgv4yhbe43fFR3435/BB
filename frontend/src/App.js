@@ -287,12 +287,11 @@ const TeraBoxDownloader = () => {
                   </div>
                   <button
                     onClick={() => {
-                      // The download already happened automatically, just show a message
-                      alert("File downloaded successfully! Check your Downloads folder.");
+                      alert("✅ Demo file downloaded successfully!\n\n📁 Check your Downloads folder\n📝 This is a demo file showing the downloader functionality\n🎬 In production, real TeraBox videos would be downloaded");
                     }}
                     className="ml-4 px-6 py-3 btn-3d bg-green-600 hover:bg-green-500 text-white rounded-lg font-medium"
                   >
-                    Downloaded ✓
+                    Demo Downloaded ✓
                   </button>
                 </div>
               </div>
