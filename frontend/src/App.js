@@ -37,50 +37,49 @@ const TeraBoxDownloader = () => {
     setError("");
     setDownloadLink("");
 
-    // Mock download process with realistic file
+    // Mock download process - create demo file
     setTimeout(() => {
       setIsLoading(false);
-      const fileName = "TeraBox_Video_" + Date.now() + ".mp4";
       
-      // Create a better mock video file that simulates real size
-      const createRealisticMockVideo = (sizeMB = 3) => {
-        const targetSize = sizeMB * 1024 * 1024; // Convert to bytes
-        
-        // Create content that simulates a real video file
-        const videoMetadata = {
-          title: "TeraBox Downloaded Video",
-          duration: "00:02:30",
-          resolution: "1280x720",
-          codec: "H.264",
-          bitrate: "1500 kbps",
-          downloadedFrom: url,
-          timestamp: new Date().toISOString(),
-          size: `${sizeMB} MB`
-        };
-        
-        // Create a text-based content that represents the video
-        let content = `# TeraBox Video File\n`;
-        content += `# This is a mock video file for demonstration\n`;
-        content += `# Video Metadata:\n`;
-        content += JSON.stringify(videoMetadata, null, 2) + "\n\n";
-        
-        // Add pattern data to reach target size
-        const baseContentSize = new TextEncoder().encode(content).length;
-        const remainingSize = targetSize - baseContentSize;
-        
-        // Fill with binary-like pattern to simulate video data
-        const pattern = "0123456789ABCDEF";
-        for (let i = 0; i < remainingSize; i += 16) {
-          content += pattern;
-          if (i % 1024 === 0) content += "\n"; // Add newlines periodically
-        }
-        
-        return content;
+      // Extract potential filename from URL or create generic one
+      const urlParts = url.split('/');
+      const lastPart = urlParts[urlParts.length - 1];
+      const baseFileName = lastPart.includes('.') ? lastPart.split('.')[0] : 'TeraBox_Video';
+      const fileName = `${baseFileName}_${Date.now()}.mp4`;
+      
+      // Create demo download info file (since this is frontend-only)
+      const downloadInfo = {
+        originalUrl: url,
+        fileName: fileName,
+        fileSize: "3.2 MB",
+        resolution: "1280x720",
+        duration: "00:02:45",
+        format: "MP4 (H.264)",
+        downloadedAt: new Date().toLocaleString(),
+        status: "Demo Download - Frontend Only",
+        note: "This is a demonstration of the TeraBox downloader interface. In a real implementation, this would connect to actual TeraBox servers to download the real file.",
+        mockFileData: "Lorem ipsum video data would be here...",
+        instructions: [
+          "1. This file demonstrates the download functionality",
+          "2. In production, real video files would be downloaded",
+          "3. File size and metadata would match the actual TeraBox file",
+          "4. Videos would be playable in standard media players"
+        ]
       };
       
-      // Generate realistic mock video content
-      const mockVideoContent = createRealisticMockVideo(3); // 3MB
-      const blob = new Blob([mockVideoContent], { type: 'video/mp4' });
+      // Create a substantial file (3MB+) with the info
+      let fileContent = "=== TERABOX DOWNLOADER DEMO ===\n\n";
+      fileContent += JSON.stringify(downloadInfo, null, 2) + "\n\n";
+      
+      // Add substantial content to reach ~3MB
+      fileContent += "=== DEMO VIDEO DATA ===\n";
+      const demoPattern = "DEMO_VIDEO_DATA_CHUNK_";
+      for (let i = 0; i < 100000; i++) {
+        fileContent += demoPattern + i.toString().padStart(6, '0') + "_END\n";
+      }
+      
+      // Create blob and download
+      const blob = new Blob([fileContent], { type: 'application/octet-stream' });
       const downloadUrl = URL.createObjectURL(blob);
       
       setDownloadLink(downloadUrl);
@@ -94,10 +93,15 @@ const TeraBoxDownloader = () => {
       link.click();
       document.body.removeChild(link);
       
+      // Show success message
+      setTimeout(() => {
+        alert(`🎉 Demo download completed!\n\nFile: ${fileName}\nSize: ~3MB\n\nNote: This is a demo file. In production, real TeraBox videos would be downloaded.`);
+      }, 1000);
+      
       // Clean up
       setTimeout(() => {
         URL.revokeObjectURL(downloadUrl);
-      }, 10000);
+      }, 30000);
     }, 3000);
   };
 
