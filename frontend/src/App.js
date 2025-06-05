@@ -37,15 +37,39 @@ const TeraBoxDownloader = () => {
     setError("");
     setDownloadLink("");
 
-    // Mock download process with enhanced loading
+    // Mock download process with realistic video file
     setTimeout(() => {
       setIsLoading(false);
-      // Generate a real downloadable file
       const fileName = "TeraBox_Video_" + Date.now() + ".mp4";
       
-      // Create a mock video file blob for download
-      const mockVideoContent = "Mock TeraBox video file content - " + new Date().toISOString();
-      const blob = new Blob([mockVideoContent], { type: 'video/mp4' });
+      // Create a realistic mock video file (3MB size)
+      const generateMockVideoData = (sizeInMB) => {
+        const sizeInBytes = sizeInMB * 1024 * 1024;
+        const mockVideoHeader = new Uint8Array([
+          0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, // MP4 header
+          0x69, 0x73, 0x6F, 0x6D, 0x00, 0x00, 0x02, 0x00,
+          0x69, 0x73, 0x6F, 0x6D, 0x69, 0x73, 0x6F, 0x32,
+          0x61, 0x76, 0x63, 0x31, 0x6D, 0x70, 0x34, 0x31
+        ]);
+        
+        // Create buffer with realistic size
+        const buffer = new ArrayBuffer(sizeInBytes);
+        const view = new Uint8Array(buffer);
+        
+        // Add MP4 header
+        view.set(mockVideoHeader, 0);
+        
+        // Fill rest with mock video data pattern
+        for (let i = mockVideoHeader.length; i < sizeInBytes; i++) {
+          view[i] = Math.floor(Math.random() * 256);
+        }
+        
+        return buffer;
+      };
+      
+      // Generate 3MB mock video
+      const mockVideoBuffer = generateMockVideoData(3);
+      const blob = new Blob([mockVideoBuffer], { type: 'video/mp4' });
       const downloadUrl = URL.createObjectURL(blob);
       
       setDownloadLink(downloadUrl);
@@ -54,6 +78,7 @@ const TeraBoxDownloader = () => {
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = fileName;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -61,7 +86,7 @@ const TeraBoxDownloader = () => {
       // Clean up the blob URL after a delay
       setTimeout(() => {
         URL.revokeObjectURL(downloadUrl);
-      }, 5000);
+      }, 10000);
     }, 3000);
   };
 
