@@ -204,7 +204,7 @@ const TeraBoxDownloader = () => {
             onSubmit={handleDownload} 
             className="card-3d p-8 rounded-2xl shadow-2xl animate-slideUp"
             style={{
-              transform: `perspective(1000px) rotateX(${mousePosition.y * 0.01}deg) rotateY(${mousePosition.x * 0.01}deg)`
+              transform: `perspective(1000px) rotateX(${mousePosition.y * 0.015}deg) rotateY(${mousePosition.x * 0.015}deg) translateZ(${mousePosition.x * 0.2}px)`
             }}
           >
             <div className="mb-6">
